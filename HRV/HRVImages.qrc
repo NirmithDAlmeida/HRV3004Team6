@@ -10,7 +10,7 @@
         <file>images/buttons/backButton.svg</file>
         <file>images/icons/electrodeOn.svg</file>
         <file>images/icons/electrodeOff.svg</file>
-        <file>images/overlay/denasButtonless.svg</file>
         <file>../res/buttons/menuButton.svg</file>
+        <file>../res/overlay/background.svg</file>
     </qresource>
 </RCC>
