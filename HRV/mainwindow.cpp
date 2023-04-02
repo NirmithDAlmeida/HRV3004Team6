@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     changePowerStatus();
     connect(ui->powerButton, &QPushButton::released, this, &MainWindow::powerChange);
 
+    //git test
 
     // device interface button connections
     connect(ui->upButton, &QPushButton::pressed, this, &MainWindow::navigateUpMenu);
