@@ -21,13 +21,13 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget->setCurrentRow(0);
     ui->menuLabel->setText(masterMenu->getName());
 
+    ui->challengeLabel->setText("Challenge Level: " + QString::number(challengelevel));
+    ui->breathintLabel->setText("Breath Interval: " + QString::number(breathint));
 
     // Account for device being "off" on sim start
     powerStatus = false;
     changePowerStatus();
     connect(ui->powerButton, &QPushButton::released, this, &MainWindow::powerChange);
-
-    //git test
 
     // charge button connections
     connect(ui->chargeAdminButton, &QPushButton::released, this, &MainWindow::rechargeBattery);
@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     currentTimerCount = 0;
     // initialize the timer
     timer = new QTimer(this);
+    batteryLvl = 100;
     initializeTimer(timer);
 }
 
@@ -66,8 +67,8 @@ void MainWindow::initializeMainMenu(Menu* m) {
     m->addChildMenu(history);
 
 
-    Menu* challengeSetting = new Menu("CHALLENGE LEVEL",{"YES","NO"}, settings);
-    Menu* breathSetting = new Menu("BREATH INTERVAL",{"YES","NO"}, settings);
+    Menu* challengeSetting = new Menu("CHALLENGE LEVEL",{"1","2","3","4"}, settings);
+    Menu* breathSetting = new Menu("BREATH INTERVAL",{"5","10","15","20","25","30"}, settings);
     settings->addChildMenu(challengeSetting);
     settings->addChildMenu(breathSetting);
 
@@ -82,8 +83,6 @@ void MainWindow::initializeMainMenu(Menu* m) {
 void MainWindow::initializeTimer(QTimer* t) {
 
     connect(t, &QTimer::timeout, this, &MainWindow::updateTimer);
-
-    t->start(1000);
 
 }
 
@@ -143,12 +142,18 @@ void MainWindow::navigateSubMenu() {
         }
     }
     if (masterMenu->getName() == "CHALLENGE LEVEL") {
+
         if (masterMenu->getMenuItems()[index] == "YES") {
             //edit challenge level here
             navigateBack();
             return;
         }
-        else {//NO selected, and go back
+        else {//NO selected, and go back, a challenge level is selected
+            //make changes to challenge level member var
+            challengelevel = masterMenu->getMenuItems()[index].toInt();
+            QString challengeleveltext = masterMenu->getMenuItems()[index];
+
+            ui->challengeLabel->setText("Challenge Level: " + challengeleveltext);
             navigateBack();
             return;
         }
@@ -160,7 +165,11 @@ void MainWindow::navigateSubMenu() {
             navigateBack();
             return;
         }
-        else {//NO selected, and go back
+        else {//NO selected, and go back,a breath interval is selected
+            breathint = masterMenu->getMenuItems()[index].toInt();
+            QString breathinttext = masterMenu->getMenuItems()[index];
+
+            ui->breathintLabel->setText("Breath Interval: " + breathinttext);
             navigateBack();
             return;
         }
@@ -219,7 +228,8 @@ void MainWindow::changePowerStatus() {
     ui->menuLabel->setVisible(powerStatus);
     ui->statusBarQFrame->setVisible(powerStatus);
     ui->treatmentView->setVisible(powerStatus);
-    ui->frequencyLabel->setVisible(powerStatus);
+    ui->challengeLabel->setVisible(powerStatus);
+    ui->breathintLabel->setVisible(powerStatus);
     ui->programViewWidget->setVisible(powerStatus);
 
     //Remove this if we want the menu to stay in the same position when the power is off
@@ -238,8 +248,17 @@ void MainWindow::changePowerStatus() {
 }
 
 void MainWindow::powerChange() {
-    powerStatus  = !powerStatus;
-    changePowerStatus();
+
+    if(!powerStatus){
+        powerStatus  = !powerStatus;
+        changePowerStatus();
+        timer->start(1000);
+    }else{
+        powerStatus  = !powerStatus;
+        changePowerStatus();
+        timer->stop();
+    }
+
 }
 
 void MainWindow::rechargeBattery() {
