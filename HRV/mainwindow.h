@@ -9,7 +9,7 @@
 #include <QStatusBar>
 #include <QVector>
 #include <QtGlobal>
-
+#include <QTimer>
 #include "menu.h"
 
 QT_BEGIN_NAMESPACE
@@ -34,17 +34,24 @@ private:
     void updateMenu(const QString, const QStringList);
     void initializeMainMenu(Menu*);
 
-
+    double batteryLvl;
+    int currentTimerCount;
+    int maxPowerLevel;
     bool powerStatus;
+    QTimer* timer;
+    void initializeTimer(QTimer*);
     void changePowerStatus();
+    void drainBattery();
 
 private slots:
+    void updateTimer();
     void navigateDownMenu();
     void navigateUpMenu();
     void navigateSubMenu();
     void navigateToMainMenu();
     void navigateBack();
-
+    void rechargeBattery();
+    void changeBatteryLevel(double);
     void powerChange();
 };
 #endif // MAINWINDOW_H
