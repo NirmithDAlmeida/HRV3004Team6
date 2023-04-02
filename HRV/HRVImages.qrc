@@ -12,5 +12,7 @@
         <file>images/icons/electrodeOff.svg</file>
         <file>../res/buttons/menuButton.svg</file>
         <file>../res/overlay/background.svg</file>
+        <file>images/icons/RedHeart.svg</file>
+        <file>images/icons/WhiteHeart.svg</file>
     </qresource>
 </RCC>
