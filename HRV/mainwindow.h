@@ -43,6 +43,9 @@ private:
     void changePowerStatus();
     void drainBattery();
 
+    int challengelevel = 1;
+    int breathint = 10;
+
 private slots:
     void updateTimer();
     void navigateDownMenu();
