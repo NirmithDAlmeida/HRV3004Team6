@@ -77,7 +77,7 @@ color:
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/res/overlay/background.svg);
+     <string notr="true">border-image: url(:/images/overlay/background.svg);
 background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="alignment">
@@ -426,7 +426,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
-image: url(:/res/buttons/menuButton.svg);
+image: url(:/images/buttons/menuButton.svg);
 background-color: #ffffff;
 border-radius: 20px;
 }
