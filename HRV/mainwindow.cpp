@@ -17,15 +17,11 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget->setCurrentRow(0);
     ui->menuLabel->setText(masterMenu->getName());
 
-//    //WHEN POWERED ON
-//    activeQListWidget->setVisible(true);
-//    ui->menuLabel->setVisible(true);
-//    ui->statusBarQFrame->setVisible(true);
-//    ui->treatmentView->setVisible(false);
-//    ui->frequencyLabel->setVisible(true);
-//    ui->programViewWidget->setVisible(true);
 
-
+    // Account for device being "off" on sim start
+    powerStatus = false;
+    changePowerStatus();
+    connect(ui->powerButton, &QPushButton::released, this, &MainWindow::powerChange);
 
 
     // device interface button connections
@@ -91,7 +87,7 @@ void MainWindow::navigateSubMenu() {
     int index = activeQListWidget->currentRow();
     if (index < 0) return;
 
-    // Prevent crash if ok button is selected in view, or challenge, or breath
+    // Prevent crash if ok button is selected in view
     if (masterMenu->getName() == "VIEW") {
         return;
     }
@@ -189,4 +185,33 @@ void MainWindow::navigateToMainMenu() {
     updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
 //    ui->programViewWidget->setVisible(false);
 //    ui->electrodeLabel->setVisible(false);
+}
+
+void MainWindow::changePowerStatus() {
+
+    activeQListWidget->setVisible(powerStatus);
+    ui->menuLabel->setVisible(powerStatus);
+    ui->statusBarQFrame->setVisible(powerStatus);
+    ui->treatmentView->setVisible(powerStatus);
+    ui->frequencyLabel->setVisible(powerStatus);
+    ui->programViewWidget->setVisible(powerStatus);
+
+    //Remove this if we want the menu to stay in the same position when the power is off
+    if (powerStatus) {
+        MainWindow::navigateToMainMenu();
+    }
+
+    ui->upButton->setEnabled(powerStatus);
+    ui->downButton->setEnabled(powerStatus);
+    ui->leftButton->setEnabled(powerStatus);
+    ui->rightButton->setEnabled(powerStatus);
+    ui->menuButton->setEnabled(powerStatus);
+    ui->okButton->setEnabled(powerStatus);
+    ui->backButton->setEnabled(powerStatus);
+
+}
+
+void MainWindow::powerChange() {
+    powerStatus  = !powerStatus;
+    changePowerStatus();
 }

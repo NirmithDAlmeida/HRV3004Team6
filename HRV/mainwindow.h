@@ -34,11 +34,17 @@ private:
     void updateMenu(const QString, const QStringList);
     void initializeMainMenu(Menu*);
 
+
+    bool powerStatus;
+    void changePowerStatus();
+
 private slots:
     void navigateDownMenu();
     void navigateUpMenu();
     void navigateSubMenu();
     void navigateToMainMenu();
     void navigateBack();
+
+    void powerChange();
 };
 #endif // MAINWINDOW_H
