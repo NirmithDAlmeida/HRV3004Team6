@@ -22,7 +22,8 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    menu.h
+    menu.h \
+    session.h
 
 FORMS += \
     mainwindow.ui

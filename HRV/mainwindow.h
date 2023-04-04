@@ -45,7 +45,9 @@ private:
 
     int challengelevel = 1;
     int breathint = 10;
-
+    void sessionTexts(bool);
+    void setBreathInt(int);
+    void setChallengelevel(int);
 private slots:
     void updateTimer();
     void navigateDownMenu();
@@ -56,5 +58,6 @@ private slots:
     void rechargeBattery();
     void changeBatteryLevel(double);
     void powerChange();
+    void beginSession();
 };
 #endif // MAINWINDOW_H

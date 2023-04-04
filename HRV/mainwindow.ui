@@ -50,9 +50,9 @@ color:
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>20</y>
+      <y>-13</y>
       <width>461</width>
-      <height>488</height>
+      <height>571</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -88,7 +88,7 @@ background-color: rgba(255, 255, 255, 0);</string>
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>440</y>
+      <y>460</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -136,7 +136,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>110</y>
+      <y>60</y>
       <width>391</width>
       <height>41</height>
      </rect>
@@ -220,14 +220,36 @@ background-color: rgb(0, 0, 0);</string>
       <string>%p%</string>
      </property>
     </widget>
+    <widget class="QLabel" name="electrodeLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>10</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="HRVImages.qrc">:/images/icons/WhiteHeart.svg</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QGraphicsView" name="powerOffView">
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>108</y>
+      <y>58</y>
       <width>391</width>
-      <height>161</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -238,9 +260,9 @@ background-color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>170</y>
+      <y>121</y>
       <width>391</width>
-      <height>102</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -251,7 +273,7 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>85</y>
+       <y>150</y>
        <width>191</width>
        <height>16</height>
       </rect>
@@ -279,7 +301,7 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>190</x>
-       <y>85</y>
+       <y>150</y>
        <width>201</width>
        <height>16</height>
       </rect>
@@ -306,13 +328,13 @@ color: rgb(255, 255, 255);</string>
       <number>6</number>
      </property>
     </widget>
-    <widget class="QGraphicsView" name="treatmentView">
+    <widget class="QGraphicsView" name="SessionView">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
        <width>391</width>
-       <height>111</height>
+       <height>181</height>
       </rect>
      </property>
      <property name="font">
@@ -330,7 +352,7 @@ color: rgb(255, 255, 255);</string>
        <x>0</x>
        <y>0</y>
        <width>391</width>
-       <height>91</height>
+       <height>151</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -359,16 +381,226 @@ selection-background-color: rgb(122, 0, 0)</string>
       <number>-1</number>
      </property>
     </widget>
-    <zorder>treatmentView</zorder>
-    <zorder>mainMenuListView</zorder>
+    <widget class="QLabel" name="CoherenceText">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(52, 101, 164);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Coherence</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>6</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LengthText">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(52, 101, 164);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Length</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>6</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Achievement">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>10</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(52, 101, 164);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Achievement</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>6</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="CoherenceTextValue">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255,255,255);
+color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>0.0</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>6</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LengthTextValue">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>30</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255,255,255);
+color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>0.0</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>6</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="AchievementValue">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>30</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255,255,255);
+color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>0.0</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>6</number>
+     </property>
+    </widget>
+    <zorder>SessionView</zorder>
     <zorder>challengeLabel</zorder>
     <zorder>breathintLabel</zorder>
+    <zorder>CoherenceText</zorder>
+    <zorder>LengthText</zorder>
+    <zorder>Achievement</zorder>
+    <zorder>CoherenceTextValue</zorder>
+    <zorder>LengthTextValue</zorder>
+    <zorder>AchievementValue</zorder>
+    <zorder>mainMenuListView</zorder>
    </widget>
    <widget class="QLabel" name="menuLabel">
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>150</y>
+      <y>100</y>
       <width>391</width>
       <height>20</height>
      </rect>
@@ -401,7 +633,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>290</y>
+      <y>310</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -449,7 +681,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>290</y>
+      <y>310</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -497,7 +729,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>290</y>
+      <y>310</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -557,7 +789,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>340</y>
+      <y>360</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -605,7 +837,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>570</x>
-      <y>340</y>
+      <y>360</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -665,7 +897,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>340</y>
+      <y>360</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -722,7 +954,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>390</y>
+      <y>410</y>
       <width>40</width>
       <height>40</height>
      </rect>
