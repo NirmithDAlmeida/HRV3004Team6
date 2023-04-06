@@ -53,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->electrodeLabel_2->setVisible(true);
     ui->electrodeLabel->setVisible(false);
     initializeTimer(timer);
+
+    pacetimer = new QTimer(this);//needed to init here otherwise wouldnt be able to check isActive()
 }
 
 MainWindow::~MainWindow()
@@ -152,7 +154,6 @@ void MainWindow::beginSession() {
 
 
     //starts breath pacer animation, stop the timer
-    pacetimer = new QTimer(this);
     int paceint = (breathint * 10)/ 2;//this is 10s interval is 1 breath
     pacetimer->setInterval(paceint);
     pacetimer->start();
@@ -258,7 +259,7 @@ void MainWindow::navigateBack() {
     ui->mainMenuListView->setVisible(true);
     //stop session
     sessionTexts(false);
-    pacetimer->stop();
+    if(pacetimer->isActive())pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
     //save session
 
     if (masterMenu->getName() == "MAIN MENU") {
