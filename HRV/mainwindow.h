@@ -39,7 +39,9 @@ private:
     int maxPowerLevel;
     bool powerStatus;
     QTimer* timer;
+    QTimer* pacetimer;
     void initializeTimer(QTimer*);
+    void initializepaceTimer();
     void changePowerStatus();
     void drainBattery();
 
@@ -48,6 +50,9 @@ private:
     void sessionTexts(bool);
     void setBreathInt(int);
     void setChallengelevel(int);
+
+    int progressDirection = 1;
+
 private slots:
     void updateTimer();
     void navigateDownMenu();
@@ -59,5 +64,6 @@ private slots:
     void changeBatteryLevel(double);
     void powerChange();
     void beginSession();
+    void breathpacer();
 };
 #endif // MAINWINDOW_H

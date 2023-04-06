@@ -147,6 +147,18 @@ void MainWindow::beginSession() {
     //Power Buttons Enabled
     ui->rightButton->blockSignals(false);
     ui->leftButton->blockSignals(false);
+
+
+
+
+    //starts breath pacer animation, stop the timer
+    pacetimer = new QTimer(this);
+    int paceint = (breathint * 10)/ 2;//this is 10s interval is 1 breath
+    pacetimer->setInterval(paceint);
+    pacetimer->start();
+
+    initializepaceTimer();
+    ui->breathpacer->setValue(0);
 }
 
 void MainWindow::navigateSubMenu() {
@@ -246,6 +258,7 @@ void MainWindow::navigateBack() {
     ui->mainMenuListView->setVisible(true);
     //stop session
     sessionTexts(false);
+    pacetimer->stop();
     //save session
 
     if (masterMenu->getName() == "MAIN MENU") {
@@ -365,4 +378,25 @@ void MainWindow::drainBattery() {
     double batteryLevel = batteryLvl - 0.05;
 
     changeBatteryLevel(batteryLevel);
+}
+
+void MainWindow::initializepaceTimer() {
+
+    connect(pacetimer, &QTimer::timeout, this, &MainWindow::breathpacer);
+
+}
+
+void MainWindow::breathpacer(){
+    int value = ui->breathpacer->value() + progressDirection;
+
+    if (value >= 100){
+
+        progressDirection = -1;
+        value = 100;
+
+    }else if (value <= 0){
+        progressDirection = 1;
+        value = 0;
+    }
+    ui->breathpacer->setValue(value);
 }

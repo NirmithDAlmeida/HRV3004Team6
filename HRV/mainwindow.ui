@@ -346,41 +346,6 @@ color: rgb(255, 255, 255);</string>
       <string notr="true">background-color: rgb(243, 243, 243);</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="mainMenuListView">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>391</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-bottom-right-radius: 12px;
-border-bottom-left-radius: 12px;
-background-color: rgb(243, 243, 243);
-color: rgb(0, 0, 0);
-selection-background-color: rgb(122, 0, 0)</string>
-     </property>
-     <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="uniformItemSizes">
-      <bool>false</bool>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="selectionRectVisible">
-      <bool>false</bool>
-     </property>
-     <property name="currentRow">
-      <number>-1</number>
-     </property>
-    </widget>
     <widget class="QLabel" name="CoherenceText">
      <property name="enabled">
       <bool>true</bool>
@@ -585,6 +550,57 @@ color: rgb(0, 0, 0);</string>
       <number>6</number>
      </property>
     </widget>
+    <widget class="QProgressBar" name="breathpacer">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>100</y>
+       <width>261</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="textVisible">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="mainMenuListView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>391</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-bottom-right-radius: 12px;
+border-bottom-left-radius: 12px;
+background-color: rgb(243, 243, 243);
+color: rgb(0, 0, 0);
+selection-background-color: rgb(122, 0, 0)</string>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="uniformItemSizes">
+      <bool>false</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="selectionRectVisible">
+      <bool>false</bool>
+     </property>
+     <property name="currentRow">
+      <number>-1</number>
+     </property>
+    </widget>
     <zorder>SessionView</zorder>
     <zorder>challengeLabel</zorder>
     <zorder>breathintLabel</zorder>
@@ -594,6 +610,7 @@ color: rgb(0, 0, 0);</string>
     <zorder>CoherenceTextValue</zorder>
     <zorder>LengthTextValue</zorder>
     <zorder>AchievementValue</zorder>
+    <zorder>breathpacer</zorder>
     <zorder>mainMenuListView</zorder>
    </widget>
    <widget class="QLabel" name="menuLabel">
