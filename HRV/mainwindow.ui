@@ -554,9 +554,9 @@ color: rgb(0, 0, 0);</string>
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>100</y>
+       <y>123</y>
        <width>261</width>
-       <height>23</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="value">
@@ -567,6 +567,9 @@ color: rgb(0, 0, 0);</string>
      </property>
     </widget>
     <widget class="QListWidget" name="mainMenuListView">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -601,6 +604,16 @@ selection-background-color: rgb(122, 0, 0)</string>
       <number>-1</number>
      </property>
     </widget>
+    <widget class="QCustomPlot" name="customPlot" native="true">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>201</width>
+       <height>61</height>
+      </rect>
+     </property>
+    </widget>
     <zorder>SessionView</zorder>
     <zorder>challengeLabel</zorder>
     <zorder>breathintLabel</zorder>
@@ -611,6 +624,7 @@ selection-background-color: rgb(122, 0, 0)</string>
     <zorder>LengthTextValue</zorder>
     <zorder>AchievementValue</zorder>
     <zorder>breathpacer</zorder>
+    <zorder>customPlot</zorder>
     <zorder>mainMenuListView</zorder>
    </widget>
    <widget class="QLabel" name="menuLabel">
@@ -1165,6 +1179,14 @@ QPushButton:pressed {
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="HRVImages.qrc"/>
  </resources>
