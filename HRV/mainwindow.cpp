@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
     initializeTimer(timer);
 
     pacetimer = new QTimer(this);//needed to init here otherwise wouldnt be able to check isActive()
+
+    coherencetimer = new QTimer(this);//needed to init here otherwise wouldnt be able to check isActive()
 }
 
 MainWindow::~MainWindow()
@@ -70,6 +72,20 @@ void MainWindow::sessionTexts(bool a){
     ui->CoherenceTextValue->setVisible(a);
     ui->LengthTextValue->setVisible(a);
     ui->AchievementValue->setVisible(a);
+}
+
+void MainWindow::makePlot(double elapsedTime)
+{
+    numData = 1;
+    // create graph and assign data to it:
+    ui->customPlot->addGraph();
+    // give the axes some labels:
+    ui->customPlot->xAxis->setLabel("x");
+    ui->customPlot->yAxis->setLabel("y");
+    // set axes ranges, so we see all data:
+    ui->customPlot->xAxis->setRange(0, elapsedTime + 30);
+    ui->customPlot->yAxis->setRange(0, 16);
+    ui->customPlot->replot();
 }
 
 void MainWindow::initializeMainMenu(Menu* m) {
@@ -160,6 +176,13 @@ void MainWindow::beginSession() {
 
     initializepaceTimer();
     ui->breathpacer->setValue(0);
+
+    //starts coherence updates
+    coherencetimer->setInterval(1000);
+    coherencetimer->start();
+
+    initializecoherenceTimer();
+    makePlot(0);
 }
 
 void MainWindow::navigateSubMenu() {
@@ -260,6 +283,7 @@ void MainWindow::navigateBack() {
     //stop session
     sessionTexts(false);
     if(pacetimer->isActive())pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
+    if(coherencetimer->isActive())coherencetimer->stop();//just copying other timer code
     //save session
 
     if (masterMenu->getName() == "MAIN MENU") {
@@ -379,11 +403,18 @@ void MainWindow::drainBattery() {
     double batteryLevel = batteryLvl - 0.05;
 
     changeBatteryLevel(batteryLevel);
+    currentTimerCount++;
 }
 
 void MainWindow::initializepaceTimer() {
 
     connect(pacetimer, &QTimer::timeout, this, &MainWindow::breathpacer);
+
+}
+
+void MainWindow::initializecoherenceTimer() {
+
+    connect(coherencetimer, &QTimer::timeout, this, &MainWindow::coherenceUpdate);
 
 }
 
@@ -400,4 +431,37 @@ void MainWindow::breathpacer(){
         value = 0;
     }
     ui->breathpacer->setValue(value);
+}
+
+void MainWindow::coherenceUpdate()
+{
+    if((int(currentTimerCount) % 30) == 0){
+        ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
+    }
+    xData[numData] = currentTimerCount;
+    if (numData == 0){
+        yData[numData] = 2;
+    } else{
+        double r =( (rand() % 5));
+        yData[numData] = yData[numData-1] + r - 1;
+        if (yData[numData] < 0){
+            yData[numData] = yData[numData] + 4;
+        } else if (yData[numData] > 16){
+            yData[numData] = yData[numData] - 4;
+        }
+        printf("%0.2f %0.2f %0.2f \n", r, xData[numData], yData[numData]);
+    }
+
+    // generate some data:
+    QVector<double> x(numData), y(numData); // initialize with entries 0..100
+    for (int i=0; i<numData; ++i)
+    {
+      x[i] = xData[i]; // x goes from -1 to 1
+      //printf("%0.2f %0.2f",xData[i], yData[i]);
+      y[i] = yData[i]; // let's plot a quadratic function
+    }
+
+    ui->customPlot->graph(0)->setData(x, y);
+    ui->customPlot->replot();
+    numData++;
 }

@@ -35,13 +35,15 @@ private:
     void initializeMainMenu(Menu*);
 
     double batteryLvl;
-    int currentTimerCount;
+    double currentTimerCount;
     int maxPowerLevel;
     bool powerStatus;
     QTimer* timer;
     QTimer* pacetimer;
+    QTimer* coherencetimer;
     void initializeTimer(QTimer*);
     void initializepaceTimer();
+    void initializecoherenceTimer();
     void changePowerStatus();
     void drainBattery();
 
@@ -50,7 +52,9 @@ private:
     void sessionTexts(bool);
     void setBreathInt(int);
     void setChallengelevel(int);
-
+    void makePlot(double);
+    double xData[101], yData[101];
+    int numData;
     int progressDirection = 1;
 
 private slots:
@@ -65,5 +69,6 @@ private slots:
     void powerChange();
     void beginSession();
     void breathpacer();
+    void coherenceUpdate();
 };
 #endif // MAINWINDOW_H
