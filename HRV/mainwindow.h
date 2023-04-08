@@ -57,6 +57,11 @@ private:
     int numData;
     int progressDirection = 1;
 
+    double yVal;
+    double xStep =1;
+    QVector<double> xValues;
+    QVector<double> yValues;
+
 private slots:
     void updateTimer();
     void navigateDownMenu();

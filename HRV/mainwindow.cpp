@@ -61,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    xValues.clear();
+    yValues.clear();
     delete ui;
 }
 void MainWindow::sessionTexts(bool a){
@@ -77,16 +79,16 @@ void MainWindow::sessionTexts(bool a){
 void MainWindow::makePlot(double elapsedTime)
 {
     numData = 0;
-    xData[0] = 0;
-    yData[0] = 0;
+    //xData[0] = 0;
+    //yData[0] = 60;
     // create graph and assign data to it:
     ui->customPlot->addGraph();
     // give the axes some labels:
-    ui->customPlot->xAxis->setLabel("x");
-    ui->customPlot->yAxis->setLabel("y");
+    ui->customPlot->xAxis->setLabel("Time");
+    ui->customPlot->yAxis->setLabel("HeartRate");
     // set axes ranges, so we see all data:
     ui->customPlot->xAxis->setRange(0, elapsedTime + 30);
-    ui->customPlot->yAxis->setRange(0, 16);
+    ui->customPlot->yAxis->setRange(50, 100);
     ui->customPlot->replot();
 }
 
@@ -287,6 +289,9 @@ void MainWindow::navigateBack() {
     currentTimerCount = -1;
     coherencetimer->stop();
     coherencetimer->disconnect();
+    xValues.clear();
+    yValues.clear();
+    numData=0;
     if(pacetimer->isActive())pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
     //if(coherencetimer->isActive())coherencetimer->stop();//just copying other timer code
     //save session
@@ -315,6 +320,9 @@ void MainWindow::navigateToMainMenu() {
     currentTimerCount = -1;
     coherencetimer->stop();
     coherencetimer->disconnect();
+    numData=0;
+    xValues.clear();
+    yValues.clear();
 }
 
 void MainWindow::changePowerStatus() {
@@ -340,6 +348,9 @@ void MainWindow::changePowerStatus() {
         currentTimerCount = -1;
         coherencetimer->stop();
         coherencetimer->disconnect();
+        xValues.clear();
+        yValues.clear();
+        numData=0;
     }
 
     ui->upButton->setEnabled(powerStatus);
@@ -356,9 +367,11 @@ void MainWindow::changePowerStatus() {
 void MainWindow::powerChange() {
 
     if(!powerStatus){
-        powerStatus  = !powerStatus;
-        changePowerStatus();
-        timer->start(1000);
+        if(batteryLvl!=0){
+            powerStatus  = !powerStatus;
+            changePowerStatus();
+            timer->start(1000);
+        }
     }else{
         powerStatus  = !powerStatus;
         changePowerStatus();
@@ -384,6 +397,7 @@ void MainWindow::changeBatteryLevel(double newLevel) {
         if (newLevel == 0.0 && powerStatus == true) {
             powerChange();
             batteryLvl = 0;
+            //ui->powerButton->setDisabled(true);
         }else{
             batteryLvl = newLevel;
         }
@@ -444,32 +458,49 @@ void MainWindow::breathpacer(){
     ui->breathpacer->setValue(value);
 }
 
-void MainWindow::coherenceUpdate()
-{
+//void MainWindow::coherenceUpdate()
+//{
+//    if((int(currentTimerCount) % 30) == 0){
+//        ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
+//    }
+//    numData++;
+//    xData[numData] = currentTimerCount;
+
+//    double r =( (rand() % 5));
+//    yData[numData] = yData[numData-1] + r;
+//    if (yData[numData] < 0){
+//        yData[numData] = yData[numData] + 4;
+//    } else if (yData[numData] > 16){
+//        yData[numData] = yData[numData] - 4;
+//    }
+
+//    // generate some data:
+//    QVector<double> x(numData), y(numData); // initialize with entries 0..100
+//    for (int i=0; i<numData; ++i)
+//    {
+//      x[i] = i/50.0; // x goes from -1 to 1
+//      //printf("%0.2f %0.2f",xData[i], yData[i]);
+//      //y[i] = yData[i]; // let's plot a quadratic function
+//      y[i] = yData[i];
+//    }
+
+//    ui->customPlot->graph(0)->setData(x, y);
+//    ui->customPlot->replot();
+//}
+
+void MainWindow::coherenceUpdate(){
     if((int(currentTimerCount) % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
-    numData++;
-    xData[numData] = currentTimerCount;
-
-    double r =( (rand() % 5));
-    yData[numData] = yData[numData-1] + r - 1;
-    if (yData[numData] < 0){
-        yData[numData] = yData[numData] + 4;
-    } else if (yData[numData] > 16){
-        yData[numData] = yData[numData] - 4;
+    if((int(currentTimerCount)>60)){
+        xValues.pop_front();
+        yValues.pop_front();
+        ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 30);
     }
-
-    // generate some data:
-    QVector<double> x(numData), y(numData); // initialize with entries 0..100
-    for (int i=0; i<numData; ++i)
-    {
-      x[i] = xData[i]; // x goes from -1 to 1
-      //printf("%0.2f %0.2f",xData[i], yData[i]);
-      y[i] = yData[i]; // let's plot a quadratic function
-    }
-
-    ui->customPlot->graph(0)->setData(x, y);
+    xValues.append(xValues.isEmpty() ? 0 : xValues.last() + xStep);
+    yVal =QRandomGenerator::global()->bounded(50,100);
+    yValues.append(yVal);
+    ui->customPlot->graph(0)->setData(xValues, yValues);
+    //ui->customPlot->rescaleAxes();
     ui->customPlot->replot();
 }
-
