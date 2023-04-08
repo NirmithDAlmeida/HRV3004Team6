@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -277,26 +277,13 @@ void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList me
 
 void MainWindow::navigateBack() {
 
-    //coherencetimer->stop();
-    //coherencetimer->disconnect();
-//    if(numData>0){
-//        //xData.clear();
-//        for(int i=0;i<numData;i++){
-//          xData[numData]=0.0;
-//          yData[numData]=0.0;
-//        }
-//        numData=0;
-//     }
     ui->rightButton->blockSignals(true);
     ui->leftButton->blockSignals(true);
-
     ui->mainMenuListView->setVisible(true);
     //stop session
     sessionTexts(false);
     if(pacetimer->isActive())pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
     if(coherencetimer->isActive())coherencetimer->stop();//just copying other timer code
-    coherencetimer->disconnect();
-
     //save session
 
     if (masterMenu->getName() == "MAIN MENU") {
@@ -305,34 +292,18 @@ void MainWindow::navigateBack() {
     else {
         masterMenu = masterMenu->getParent();
         updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
-
     }
-//    coherencetimer->stop();
-//    coherencetimer->disconnect();
-    //coherencetimer = nullptr;
+
 //    ui->programViewWidget->setVisible(false); // dk why this is done, this shutsdown the menu screen
 //    ui->electrodeLabel->setVisible(false);
 }
 
 void MainWindow::navigateToMainMenu() {
-//    if(numData>0){
-//        //xData.clear();
-//        for(int i=0;i<numData;i++){
-//          xData[numData]=0.0;
-//          yData[numData]=0.0;
-//        }
-//        numData=0;
-//     }
-
-    coherencetimer->stop();
-    coherencetimer->disconnect();
     ui->mainMenuListView->setVisible(true);
     while (masterMenu->getName() != "MAIN MENU") {
         masterMenu = masterMenu->getParent();
     }
     sessionTexts(false);
-
-    //coherencetimer = nullptr;
     updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
 //    ui->programViewWidget->setVisible(false);
 //    ui->electrodeLabel->setVisible(false);

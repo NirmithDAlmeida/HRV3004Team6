@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>923</width>
-    <height>776</height>
+    <width>853</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -51,8 +51,8 @@ color:
      <rect>
       <x>310</x>
       <y>-13</y>
-      <width>561</width>
-      <height>711</height>
+      <width>461</width>
+      <height>571</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -87,8 +87,8 @@ background-color: rgba(255, 255, 255, 0);</string>
    <widget class="QPushButton" name="powerButton">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>600</y>
+      <x>520</x>
+      <y>460</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -137,7 +137,7 @@ QPushButton:pressed {
      <rect>
       <x>340</x>
       <y>60</y>
-      <width>481</width>
+      <width>391</width>
       <height>41</height>
      </rect>
     </property>
@@ -248,8 +248,8 @@ background-color: rgb(0, 0, 0);</string>
      <rect>
       <x>340</x>
       <y>58</y>
-      <width>481</width>
-      <height>361</height>
+      <width>391</width>
+      <height>231</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -261,8 +261,8 @@ background-color: rgb(0, 0, 0);</string>
      <rect>
       <x>340</x>
       <y>121</y>
-      <width>481</width>
-      <height>301</height>
+      <width>391</width>
+      <height>171</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -272,8 +272,8 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="challengeLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>280</y>
+       <x>0</x>
+       <y>150</y>
        <width>191</width>
        <height>16</height>
       </rect>
@@ -300,8 +300,8 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>280</y>
+       <x>190</x>
+       <y>150</y>
        <width>201</width>
        <height>16</height>
       </rect>
@@ -333,8 +333,8 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>481</width>
-       <height>301</height>
+       <width>391</width>
+       <height>181</height>
       </rect>
      </property>
      <property name="font">
@@ -352,7 +352,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>10</x>
        <y>10</y>
        <width>71</width>
        <height>20</height>
@@ -386,7 +386,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>120</x>
        <y>10</y>
        <width>51</width>
        <height>20</height>
@@ -420,7 +420,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>220</x>
        <y>10</y>
        <width>81</width>
        <height>20</height>
@@ -454,7 +454,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>10</x>
        <y>30</y>
        <width>71</width>
        <height>20</height>
@@ -488,7 +488,7 @@ color: rgb(0, 0, 0);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>120</x>
        <y>30</y>
        <width>51</width>
        <height>20</height>
@@ -522,7 +522,7 @@ color: rgb(0, 0, 0);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>220</x>
        <y>30</y>
        <width>81</width>
        <height>20</height>
@@ -554,8 +554,8 @@ color: rgb(0, 0, 0);</string>
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>250</y>
-       <width>331</width>
+       <y>123</y>
+       <width>261</width>
        <height>20</height>
       </rect>
      </property>
@@ -566,16 +566,6 @@ color: rgb(0, 0, 0);</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QCustomPlot" name="customPlot" native="true">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>50</y>
-       <width>441</width>
-       <height>191</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QListWidget" name="mainMenuListView">
      <property name="enabled">
       <bool>true</bool>
@@ -584,8 +574,8 @@ color: rgb(0, 0, 0);</string>
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>481</width>
-       <height>301</height>
+       <width>391</width>
+       <height>151</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -614,6 +604,16 @@ selection-background-color: rgb(122, 0, 0)</string>
       <number>-1</number>
      </property>
     </widget>
+    <widget class="QCustomPlot" name="customPlot" native="true">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>201</width>
+       <height>61</height>
+      </rect>
+     </property>
+    </widget>
     <zorder>SessionView</zorder>
     <zorder>challengeLabel</zorder>
     <zorder>breathintLabel</zorder>
@@ -632,7 +632,7 @@ selection-background-color: rgb(122, 0, 0)</string>
      <rect>
       <x>340</x>
       <y>100</y>
-      <width>481</width>
+      <width>391</width>
       <height>20</height>
      </rect>
     </property>
@@ -663,8 +663,8 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="menuButton">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>450</y>
+      <x>640</x>
+      <y>310</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -711,8 +711,8 @@ QPushButton:pressed {
    <widget class="QPushButton" name="backButton">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>450</y>
+      <x>410</x>
+      <y>310</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -759,8 +759,8 @@ QPushButton:pressed {
    <widget class="QPushButton" name="upButton">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>450</y>
+      <x>520</x>
+      <y>310</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -819,8 +819,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>500</y>
+      <x>520</x>
+      <y>360</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -867,8 +867,8 @@ QPushButton:pressed {
    <widget class="QPushButton" name="rightButton">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>500</y>
+      <x>570</x>
+      <y>360</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -927,8 +927,8 @@ QPushButton:pressed {
    <widget class="QPushButton" name="leftButton">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>500</y>
+      <x>470</x>
+      <y>360</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -984,8 +984,8 @@ QPushButton:pressed {
    <widget class="QPushButton" name="downButton">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>550</y>
+      <x>520</x>
+      <y>410</y>
       <width>40</width>
       <height>40</height>
      </rect>
@@ -1160,16 +1160,6 @@ QPushButton:pressed {
      <string>Battery Level</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>130</y>
-      <width>104</width>
-      <height>70</height>
-     </rect>
-    </property>
-   </widget>
    <zorder>batteryLevelAdminSpinBox</zorder>
    <zorder>chargeAdminButton</zorder>
    <zorder>batteryLevelAdminLabel</zorder>
@@ -1186,7 +1176,6 @@ QPushButton:pressed {
    <zorder>leftButton</zorder>
    <zorder>downButton</zorder>
    <zorder>statusBarQFrame</zorder>
-   <zorder>textEdit</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
