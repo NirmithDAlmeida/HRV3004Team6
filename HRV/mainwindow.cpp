@@ -76,7 +76,9 @@ void MainWindow::sessionTexts(bool a){
 
 void MainWindow::makePlot(double elapsedTime)
 {
-    numData = 1;
+    numData = 0;
+    xData[0] = 0;
+    yData[0] = 0;
     // create graph and assign data to it:
     ui->customPlot->addGraph();
     // give the axes some labels:
@@ -282,8 +284,11 @@ void MainWindow::navigateBack() {
     ui->mainMenuListView->setVisible(true);
     //stop session
     sessionTexts(false);
+    currentTimerCount = -1;
+    coherencetimer->stop();
+    coherencetimer->disconnect();
     if(pacetimer->isActive())pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
-    if(coherencetimer->isActive())coherencetimer->stop();//just copying other timer code
+    //if(coherencetimer->isActive())coherencetimer->stop();//just copying other timer code
     //save session
 
     if (masterMenu->getName() == "MAIN MENU") {
@@ -307,6 +312,9 @@ void MainWindow::navigateToMainMenu() {
     updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
 //    ui->programViewWidget->setVisible(false);
 //    ui->electrodeLabel->setVisible(false);
+    currentTimerCount = -1;
+    coherencetimer->stop();
+    coherencetimer->disconnect();
 }
 
 void MainWindow::changePowerStatus() {
@@ -329,6 +337,9 @@ void MainWindow::changePowerStatus() {
         ui->breathintLabel->setText("Breath Interval: " + breathinttext);
         ui->challengeLabel->setText("Challenge Level: " + challengeleveltext);
         MainWindow::navigateToMainMenu();
+        currentTimerCount = -1;
+        coherencetimer->stop();
+        coherencetimer->disconnect();
     }
 
     ui->upButton->setEnabled(powerStatus);
@@ -438,18 +449,15 @@ void MainWindow::coherenceUpdate()
     if((int(currentTimerCount) % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
+    numData++;
     xData[numData] = currentTimerCount;
-    if (numData == 0){
-        yData[numData] = 2;
-    } else{
-        double r =( (rand() % 5));
-        yData[numData] = yData[numData-1] + r - 1;
-        if (yData[numData] < 0){
-            yData[numData] = yData[numData] + 4;
-        } else if (yData[numData] > 16){
-            yData[numData] = yData[numData] - 4;
-        }
-        printf("%0.2f %0.2f %0.2f \n", r, xData[numData], yData[numData]);
+
+    double r =( (rand() % 5));
+    yData[numData] = yData[numData-1] + r - 1;
+    if (yData[numData] < 0){
+        yData[numData] = yData[numData] + 4;
+    } else if (yData[numData] > 16){
+        yData[numData] = yData[numData] - 4;
     }
 
     // generate some data:
@@ -463,5 +471,5 @@ void MainWindow::coherenceUpdate()
 
     ui->customPlot->graph(0)->setData(x, y);
     ui->customPlot->replot();
-    numData++;
 }
+
