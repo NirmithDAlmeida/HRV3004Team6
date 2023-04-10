@@ -504,7 +504,7 @@ color: rgb(0, 0, 0);</string>
 color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
-      <string>0.0</string>
+      <string>0:00</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

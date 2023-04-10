@@ -35,7 +35,7 @@ private:
     void initializeMainMenu(Menu*);
 
     double batteryLvl;
-    double currentTimerCount;
+    int currentTimerCount;
     int maxPowerLevel;
     bool powerStatus;
     QTimer* timer;
@@ -54,6 +54,7 @@ private:
     void setChallengelevel(int);
     void makePlot(double);
     double xData[101], yData[101];
+    void updateCoherenceLabels();
     int numData;
     int progressDirection = 1;
 
