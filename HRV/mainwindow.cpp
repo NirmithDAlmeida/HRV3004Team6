@@ -153,13 +153,23 @@ void MainWindow::beginSession() {
     //currentTherapy = t;
     ui->programViewWidget->setVisible(true);
     sessionTexts(true);
+    ui->CoherentLevel->setDisabled(true);
+    ui->CoherenceTextValue->setNum(0.0);//reset score values
+    ui->AchievementValue->setNum(0.0);
     //Timer
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    ui->SessionView->setScene(scene);
+//    QGraphicsScene *scene = new QGraphicsScene(this);
+//    ui->SessionView->setScene(scene);
+    currentTimerCount = -1;
+    coherencetimer->stop();
+    coherencetimer->disconnect();
+    if(pacetimer->isActive()){
+        pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
+        pacetimer->disconnect();
+    }
     //start a new timer
     //currentTimerCount = t->getTime();
     //timeString = QString::number(currentTimerCount/60) + ":00";
-    scene->addText(QString::fromStdString("Session IP"));
+//    scene->addText(QString::fromStdString("Session IP"));
     //new timer
     //initializeTimer(t->getTimer());
 
@@ -171,9 +181,6 @@ void MainWindow::beginSession() {
     //Power Buttons Enabled
     ui->rightButton->blockSignals(false);
     ui->leftButton->blockSignals(false);
-
-
-
 
     //starts breath pacer animation, stop the timer
     int breathcalc = breathint * 10;
@@ -287,6 +294,7 @@ void MainWindow::navigateBack() {
     ui->rightButton->blockSignals(true);
     ui->leftButton->blockSignals(true);
     ui->mainMenuListView->setVisible(true);
+    ui->CoherentLevel->setDisabled(false);
     //stop session
     sessionTexts(false);
     currentTimerCount = -1;
@@ -319,6 +327,7 @@ void MainWindow::navigateBack() {
 
 void MainWindow::navigateToMainMenu() {
     ui->mainMenuListView->setVisible(true);
+    ui->CoherentLevel->setDisabled(false);
     while (masterMenu->getName() != "MAIN MENU") {
         masterMenu = masterMenu->getParent();
     }
@@ -350,7 +359,7 @@ void MainWindow::changePowerStatus() {
     ui->challengeLabel->setVisible(powerStatus);
     ui->breathintLabel->setVisible(powerStatus);
     ui->programViewWidget->setVisible(powerStatus);
-
+    ui->CoherentLevel->setDisabled(false);
     //Remove this if we want the menu to stay in the same position when the power is off
     //Remove this if we want the data to remain same after off is pressed for challengeLevel and BreathInt
     if (powerStatus) {
@@ -461,7 +470,11 @@ void MainWindow::initializepaceTimer() {
 }
 
 void MainWindow::initializecoherenceTimer() {
+    if(ui->CoherentLevel->currentText()!="Incoherent"){
+        xValues.clear();
+        yValues.clear();
 
+    }
     connect(coherencetimer, &QTimer::timeout, this, &MainWindow::coherenceUpdate);
 
 }
@@ -516,21 +529,43 @@ void MainWindow::coherenceUpdate(){
     if((currentTimerCount % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
-    if((currentTimerCount>64)){
-        xValues.pop_front();
-        yValues.pop_front();
-        ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 20);
+    if(ui->CoherentLevel->currentText()=="Incoherent"){
+        if((currentTimerCount>64)){
+            xValues.pop_front();
+            yValues.pop_front();
+            ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 20);
+        }
+        xValues.append(xValues.isEmpty() ? 0 : xValues.last() + xStep);
+        yVal =QRandomGenerator::global()->bounded(50,100);
+        yValues.append(yVal);
+        ui->customPlot->graph(0)->setData(xValues, yValues);
+        //ui->customPlot->rescaleAxes();
+        ui->customPlot->replot();
+    }else{
+        if(heartpos==heartBeat.size()){
+            heartpos=0;
+        }
+        if((currentTimerCount>64)){
+            xValues.pop_front();
+            yValues.pop_front();
+            ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 20);
+        }
+        xValues.append(xValues.isEmpty() ? 0 : xValues.last() + xStep);
+        if(heartBeat[heartpos]>70){
+            yValues.append(heartBeat[heartpos]+QRandomGenerator::global()->bounded(1,5));
+        }
+        else{
+            yValues.append(heartBeat[heartpos]-QRandomGenerator::global()->bounded(1,5));
+        }
+        heartpos++;
+        ui->customPlot->graph(0)->setData(xValues, yValues);
+        //ui->customPlot->rescaleAxes();
+        ui->customPlot->replot();
     }
-    xValues.append(xValues.isEmpty() ? 0 : xValues.last() + xStep);
-    yVal =QRandomGenerator::global()->bounded(50,100);
-    yValues.append(yVal);
-    ui->customPlot->graph(0)->setData(xValues, yValues);
-    //ui->customPlot->rescaleAxes();
-    ui->customPlot->replot();
 }
 
 void MainWindow::updateCoherenceLabels(){
-    if(currentTimerCount % 5 == 0){//checks if its every 5 seconds, to update the scores
+    if(currentTimerCount % 5 == 0 && currentTimerCount!=0){//checks if its every 5 seconds, to update the scores
         srand(time(0));
         double coscore = std::round(((static_cast<double>(rand()) / RAND_MAX) * 16.0) * 10) / 10;//random coherence score as data
         double currachscore = ui->AchievementValue->text().toDouble();

@@ -60,8 +60,12 @@ private:
 
     double yVal;
     double xStep =1;
+    //for incoherent data
     QVector<double> xValues;
     QVector<double> yValues;
+    //for coherent data
+    QVector<double> heartBeat ={60,71,60,80,55,82,65,74,61,79,55,70,65,84,62,78,53,85,62,71,63,77,55,70,65,86};
+    int heartpos=0;
 
 private slots:
     void updateTimer();

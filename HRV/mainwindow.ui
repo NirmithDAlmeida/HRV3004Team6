@@ -1173,6 +1173,45 @@ QPushButton:pressed {
      <string>Battery Level</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="CoherentLevel">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>160</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(0,0,0);</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>coherent</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Incoherent</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>140</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Data Tester</string>
+    </property>
+   </widget>
    <zorder>batteryLevelAdminSpinBox</zorder>
    <zorder>chargeAdminButton</zorder>
    <zorder>batteryLevelAdminLabel</zorder>
@@ -1189,6 +1228,8 @@ QPushButton:pressed {
    <zorder>leftButton</zorder>
    <zorder>downButton</zorder>
    <zorder>statusBarQFrame</zorder>
+   <zorder>CoherentLevel</zorder>
+   <zorder>label</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
