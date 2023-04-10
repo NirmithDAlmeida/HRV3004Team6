@@ -174,7 +174,8 @@ void MainWindow::beginSession() {
 
 
     //starts breath pacer animation, stop the timer
-    int paceint = (breathint * 10)/ 2;//this is 10s interval is 1 breath
+    int breathcalc = breathint * 10;
+    int paceint = (breathcalc)/ 2;//this is 10s interval is 1 breath
     pacetimer->setInterval(paceint);
     pacetimer->start();
 
@@ -292,8 +293,14 @@ void MainWindow::navigateBack() {
     xValues.clear();
     yValues.clear();
     numData=0;
-    if(pacetimer->isActive())pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
-    //if(coherencetimer->isActive())coherencetimer->stop();//just copying other timer code
+
+    if(pacetimer->isActive()){
+        pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
+        pacetimer->disconnect();
+    }
+
+    ui->CoherenceTextValue->setNum(0.0);//reset score values
+    ui->AchievementValue->setNum(0.0);
     //save session
 
     if (masterMenu->getName() == "MAIN MENU") {
@@ -489,10 +496,11 @@ void MainWindow::breathpacer(){
 //}
 
 void MainWindow::coherenceUpdate(){
-    if((int(currentTimerCount) % 30) == 0){
+    updateCoherenceLabels();//updates score, length of session, achievment score
+    if((currentTimerCount % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
-    if((int(currentTimerCount)>60)){
+    if((currentTimerCount>60)){
         xValues.pop_front();
         yValues.pop_front();
         ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 30);
@@ -503,4 +511,19 @@ void MainWindow::coherenceUpdate(){
     ui->customPlot->graph(0)->setData(xValues, yValues);
     //ui->customPlot->rescaleAxes();
     ui->customPlot->replot();
+}
+
+void MainWindow::updateCoherenceLabels(){
+    if(currentTimerCount % 5 == 0){//checks if its every 5 seconds, to update the scores
+        srand(time(0));
+        double coscore = std::round(((static_cast<double>(rand()) / RAND_MAX) * 16.0) * 10) / 10;//random coherence score as data
+        double currachscore = ui->AchievementValue->text().toDouble();
+
+        ui->CoherenceTextValue->setNum(coscore);
+        ui->AchievementValue->setNum(currachscore + coscore);
+    }
+
+
+    QString timeString = QString::number(currentTimerCount/60) + ((currentTimerCount%60 < 10) ? + ":0" + QString::number(currentTimerCount%60) : + ":" + QString::number(currentTimerCount%60));
+    ui->LengthTextValue->setText(timeString);
 }
