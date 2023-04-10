@@ -74,6 +74,8 @@ void MainWindow::sessionTexts(bool a){
     ui->CoherenceTextValue->setVisible(a);
     ui->LengthTextValue->setVisible(a);
     ui->AchievementValue->setVisible(a);
+    ui->coherenceLevel->setVisible(a);
+    ui->coherenceLevel->setReadOnly(true);
 }
 
 void MainWindow::makePlot(double elapsedTime)
@@ -327,6 +329,13 @@ void MainWindow::navigateToMainMenu() {
     currentTimerCount = -1;
     coherencetimer->stop();
     coherencetimer->disconnect();
+    if(pacetimer->isActive()){
+        pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
+        pacetimer->disconnect();
+    }
+
+    ui->CoherenceTextValue->setNum(0.0);//reset score values
+    ui->AchievementValue->setNum(0.0);
     numData=0;
     xValues.clear();
     yValues.clear();
@@ -355,6 +364,13 @@ void MainWindow::changePowerStatus() {
         currentTimerCount = -1;
         coherencetimer->stop();
         coherencetimer->disconnect();
+        if(pacetimer->isActive()){
+            pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
+            pacetimer->disconnect();
+        }
+
+        ui->CoherenceTextValue->setNum(0.0);//reset score values
+        ui->AchievementValue->setNum(0.0);
         xValues.clear();
         yValues.clear();
         numData=0;
@@ -500,10 +516,10 @@ void MainWindow::coherenceUpdate(){
     if((currentTimerCount % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
-    if((currentTimerCount>60)){
+    if((currentTimerCount>64)){
         xValues.pop_front();
         yValues.pop_front();
-        ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 30);
+        ui->customPlot->xAxis->setRange(++numData, currentTimerCount + 20);
     }
     xValues.append(xValues.isEmpty() ? 0 : xValues.last() + xStep);
     yVal =QRandomGenerator::global()->bounded(50,100);
