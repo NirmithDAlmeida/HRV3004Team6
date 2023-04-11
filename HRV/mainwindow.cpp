@@ -567,11 +567,47 @@ void MainWindow::coherenceUpdate(){
 void MainWindow::updateCoherenceLabels(){
     if(currentTimerCount % 5 == 0 && currentTimerCount!=0){//checks if its every 5 seconds, to update the scores
         srand(time(0));
-        double coscore = std::round(((static_cast<double>(rand()) / RAND_MAX) * 16.0) * 10) / 10;//random coherence score as data
+        double coscore = std::round(((static_cast<double>(rand()) / RAND_MAX) * 7.0) * 10) / 10;//random coherence score as data
         double currachscore = ui->AchievementValue->text().toDouble();
 
         ui->CoherenceTextValue->setNum(coscore);
         ui->AchievementValue->setNum(currachscore + coscore);
+
+        ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,0)}");//
+
+        if(challengelevel == 1){
+            if (coscore < 0.5){//red
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+            }else if(coscore > 0.9){//green
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+            }else{//blue
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+            }
+        }else if(challengelevel == 2){
+            if (coscore < 0.6){//red
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+            }else if(coscore > 2.1){//green
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+            }else{//blue
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+            }
+        }else if(challengelevel == 3){
+            if (coscore < 1.8){//red
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+            }else if(coscore > 4.0){//green
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+            }else{//blue
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+            }
+        }else if(challengelevel == 4){
+            if (coscore < 4.0){//red
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+            }else if(coscore > 6.0){//green
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+            }else{//blue
+                ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+            }
+        }
     }
 
 
