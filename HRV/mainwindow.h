@@ -11,6 +11,17 @@
 #include <QtGlobal>
 #include <QTimer>
 #include "menu.h"
+#include <QDateTime>
+
+struct storedData{
+    int year = 2023;
+    int month = 04;
+    int day = 1;
+    QString time;
+    int sTime = 0;
+    int cLevel = 0;
+    double achScore = 0;
+};
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -46,6 +57,7 @@ private:
     void initializecoherenceTimer();
     void changePowerStatus();
     void drainBattery();
+    void formatHistoryOut(storedData);
 
     int challengelevel = 1;
     int breathint = 10;
@@ -68,6 +80,10 @@ private:
     //for tracking coherence scores
     QVector<double> coscoredata;
     int heartpos=0;
+
+    QVector<storedData> history;
+    QString historyOut = "";
+    bool inSession = false;
 
 private slots:
     void updateTimer();
