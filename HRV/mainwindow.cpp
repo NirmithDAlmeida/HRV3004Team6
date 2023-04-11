@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->CoherenceText->setVisible(false);
     ui->LengthText->setVisible(false);
     ui->Achievement->setVisible(false);
+    ui->historyView->setVisible(false);
     // Create menu tree
     masterMenu = new Menu("MAIN MENU", {"START A NEW SESSION","SETTINGS","HISTORY"}, nullptr);
     mainMenuOG = masterMenu;
@@ -195,7 +196,7 @@ void MainWindow::beginSession() {
     //starts coherence updates
     coherencetimer->setInterval(1000);
     coherencetimer->start();
-
+    inSession = true;
     initializecoherenceTimer();
     makePlot(0);
 }
@@ -206,14 +207,30 @@ void MainWindow::navigateSubMenu() {
     if (index < 0) return;
 
     // Prevent crash if ok button is selected in view
-    if (masterMenu->getName() == "VIEW") {
-        return;
+    if (masterMenu->getName() == "HISTORY") {
+        printf("in if %d", history.length());
+        if (masterMenu->getMenuItems()[index] == "VIEW") {
+            ui->historyView->setVisible(true);
+            historyOut = "";
+            if (history.length() == 0){
+                historyOut = "No History";
+            }else{
+                for (int i = 0; i < history.length(); i++){
+                    formatHistoryOut(history[i]);
+                }
+            }
+
+
+            ui->historyView->setText(historyOut);
+            return;
+        }
     }
 
     //Logic for when the menu is the delete menu.
     if (masterMenu->getName() == "CLEAR") {
         if (masterMenu->getMenuItems()[index] == "YES") {
             //delete recordings
+            history.clear();
             navigateBack();
             return;
         }
@@ -291,11 +308,33 @@ void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList me
 
 
 void MainWindow::navigateBack() {
-
+    if(ui->historyView->isVisible()){
+        ui->historyView->setVisible(false);
+        return;
+    }
     ui->rightButton->blockSignals(true);
     ui->leftButton->blockSignals(true);
     ui->mainMenuListView->setVisible(true);
     ui->CoherentLevel->setDisabled(false);
+    if (inSession){
+        //store data
+        storedData newSession;
+        newSession.achScore = ui->AchievementValue->text().toDouble();
+        newSession.cLevel = challengelevel;
+        newSession.sTime = currentTimerCount;
+        QDate date = QDateTime::currentDateTime().date();
+        QTime time = QDateTime::currentDateTime().time();
+        newSession.year = date.year();
+        newSession.month = date.month();
+        newSession.day = date.day();
+        newSession.time = time.toString();
+        history.push_back(newSession);
+        historyOut = "";
+        formatHistoryOut(newSession);
+        ui->historyView->setText(historyOut);
+        ui->historyView->setVisible(true);
+        inSession = false;
+    }
     //stop session
     sessionTexts(false);
     currentTimerCount = -1;
@@ -329,6 +368,26 @@ void MainWindow::navigateBack() {
 void MainWindow::navigateToMainMenu() {
     ui->mainMenuListView->setVisible(true);
     ui->CoherentLevel->setDisabled(false);
+    ui->historyView->setVisible(false);
+    if (inSession){
+        //store data
+        storedData newSession;
+        newSession.achScore = ui->AchievementValue->text().toDouble();
+        newSession.cLevel = challengelevel;
+        newSession.sTime = currentTimerCount;
+        QDate date = QDateTime::currentDateTime().date();
+        QTime time = QDateTime::currentDateTime().time();
+        newSession.year = date.year();
+        newSession.month = date.month();
+        newSession.day = date.day();
+        newSession.time = time.toString();
+        history.push_back(newSession);
+        historyOut = "";
+        formatHistoryOut(newSession);
+        ui->historyView->setText(historyOut);
+        ui->historyView->setVisible(true);
+        inSession = false;
+    }
     while (masterMenu->getName() != "MAIN MENU") {
         masterMenu = masterMenu->getParent();
     }
@@ -361,6 +420,26 @@ void MainWindow::changePowerStatus() {
     ui->breathintLabel->setVisible(powerStatus);
     ui->programViewWidget->setVisible(powerStatus);
     ui->CoherentLevel->setDisabled(false);
+    ui->historyView->setVisible(false);
+    if (inSession){
+        //store data
+        storedData newSession;
+        newSession.achScore = ui->AchievementValue->text().toDouble();
+        newSession.cLevel = challengelevel;
+        newSession.sTime = currentTimerCount;
+        QDate date = QDateTime::currentDateTime().date();
+        QTime time = QDateTime::currentDateTime().time();
+        newSession.year = date.year();
+        newSession.month = date.month();
+        newSession.day = date.day();
+        newSession.time = time.toString();
+        history.push_back(newSession);
+        historyOut = "";
+        formatHistoryOut(newSession);
+        ui->historyView->setText(historyOut);
+        ui->historyView->setVisible(true);
+        inSession = false;
+    }
     //Remove this if we want the menu to stay in the same position when the power is off
     //Remove this if we want the data to remain same after off is pressed for challengeLevel and BreathInt
     if (powerStatus) {
@@ -621,4 +700,17 @@ void MainWindow::updateCoherenceLabels(){
 
     QString timeString = QString::number(currentTimerCount/60) + ((currentTimerCount%60 < 10) ? + ":0" + QString::number(currentTimerCount%60) : + ":" + QString::number(currentTimerCount%60));
     ui->LengthTextValue->setText(timeString);
+}
+
+void MainWindow::formatHistoryOut(storedData d)
+{
+    double tempAve;
+    if (d.sTime < 5){
+        tempAve = 0;
+    }else {
+        tempAve = d.achScore/((d.sTime - (d.sTime % 5))/5);
+    }
+    historyOut = historyOut + QString::number(d.year) + "-" + QString::number(d.month) + "-" + QString::number(d.day) + "  " +
+              d.time + "\n  Achievement Score: " + QString::number(d.achScore) + "\n  Session Time: " + QString::number(d.sTime)
+            + "\n  Challenge Level: " + QString::number(d.cLevel)+ + "\n  Average Coherence: " + QString::number(tempAve) + "\n";
 }
