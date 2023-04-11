@@ -156,6 +156,7 @@ void MainWindow::beginSession() {
     ui->CoherentLevel->setDisabled(true);
     ui->CoherenceTextValue->setNum(0.0);//reset score values
     ui->AchievementValue->setNum(0.0);
+    ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");//reset LED light
     //Timer
 //    QGraphicsScene *scene = new QGraphicsScene(this);
 //    ui->SessionView->setScene(scene);
@@ -525,7 +526,7 @@ void MainWindow::breathpacer(){
 //}
 
 void MainWindow::coherenceUpdate(){
-    updateCoherenceLabels();//updates score, length of session, achievment score
+
     if((currentTimerCount % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
@@ -538,6 +539,7 @@ void MainWindow::coherenceUpdate(){
         xValues.append(xValues.isEmpty() ? 0 : xValues.last() + xStep);
         yVal =QRandomGenerator::global()->bounded(50,100);
         yValues.append(yVal);
+
         ui->customPlot->graph(0)->setData(xValues, yValues);
         //ui->customPlot->rescaleAxes();
         ui->customPlot->replot();
@@ -562,6 +564,7 @@ void MainWindow::coherenceUpdate(){
         //ui->customPlot->rescaleAxes();
         ui->customPlot->replot();
     }
+    updateCoherenceLabels();//updates score, length of session, achievment score
 }
 
 void MainWindow::updateCoherenceLabels(){
@@ -570,11 +573,16 @@ void MainWindow::updateCoherenceLabels(){
         double coscore = std::round(((static_cast<double>(rand()) / RAND_MAX) * 7.0) * 10) / 10;//random coherence score as data
         double currachscore = ui->AchievementValue->text().toDouble();
 
+        coscoredata.append(coscore);//keeps track of coherence score data
+        if (currentTimerCount > 64){//always removes the first coherence score past 64 seconds when it gets updated. to keep track properly of last 64 seconds for achievement score
+            currachscore -= coscoredata.first();
+            coscoredata.pop_front();
+        }
+
         ui->CoherenceTextValue->setNum(coscore);
         ui->AchievementValue->setNum(currachscore + coscore);
 
-        ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,0)}");//
-
+        //changes LED depending on challenge level and coherence score
         if(challengelevel == 1){
             if (coscore < 0.5){//red
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
