@@ -98,5 +98,6 @@ private slots:
     void beginSession();
     void breathpacer();
     void coherenceUpdate();
+    //void applySkin();
 };
 #endif // MAINWINDOW_H

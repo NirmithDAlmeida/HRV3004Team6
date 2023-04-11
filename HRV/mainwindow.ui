@@ -1187,8 +1187,8 @@ QPushButton:pressed {
    <widget class="QComboBox" name="CoherentLevel">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>160</y>
+      <x>20</x>
+      <y>180</y>
       <width>111</width>
       <height>25</height>
      </rect>
@@ -1213,14 +1213,53 @@ QPushButton:pressed {
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>140</y>
+      <x>20</x>
+      <y>160</y>
       <width>81</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
      <string>Data Tester</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="ApplySkin">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>180</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(0,0,0);</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>TRUE</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>FALSE</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>160</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Attach to Skin</string>
     </property>
    </widget>
    <zorder>batteryLevelAdminSpinBox</zorder>
@@ -1241,6 +1280,8 @@ QPushButton:pressed {
    <zorder>statusBarQFrame</zorder>
    <zorder>CoherentLevel</zorder>
    <zorder>label</zorder>
+   <zorder>ApplySkin</zorder>
+   <zorder>label_2</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

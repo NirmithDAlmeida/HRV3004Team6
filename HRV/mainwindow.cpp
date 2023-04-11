@@ -44,15 +44,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->okButton, &QPushButton::pressed, this, &MainWindow::navigateSubMenu);
     connect(ui->backButton, &QPushButton::pressed, this, &MainWindow::navigateBack);
     connect(ui->menuButton, &QPushButton::pressed, this, &MainWindow::navigateToMainMenu);
-
+    //tester for applying to skin
+    //connect(ui->ApplySkin,static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MainWindow::applySkin);
     // Initialize battery levels
     ui->batteryLevelAdminSpinBox->setValue(batteryLvl);
     currentTimerCount = 0;
     // initialize the timer
     timer = new QTimer(this);
     batteryLvl = 100;
-    ui->electrodeLabel_2->setVisible(true);
-    ui->electrodeLabel->setVisible(false);
     initializeTimer(timer);
 
     pacetimer = new QTimer(this);//needed to init here otherwise wouldnt be able to check isActive()
@@ -149,8 +148,6 @@ void MainWindow::navigateDownMenu() {
 
 void MainWindow::beginSession() {
 
-    //ui->electrodeLabel->setVisible(true);
-    //ui->electrodeLabel_2->setVisible(false);
     //currentTherapy = t;
     ui->programViewWidget->setVisible(true);
     sessionTexts(true);
@@ -159,8 +156,6 @@ void MainWindow::beginSession() {
     ui->AchievementValue->setNum(0.0);
     ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");//reset LED light
     //Timer
-//    QGraphicsScene *scene = new QGraphicsScene(this);
-//    ui->SessionView->setScene(scene);
     currentTimerCount = -1;
     coherencetimer->stop();
     coherencetimer->disconnect();
@@ -168,17 +163,6 @@ void MainWindow::beginSession() {
         pacetimer->stop();//fixes crashing when changing breath int without a session started previously.
         pacetimer->disconnect();
     }
-    //start a new timer
-    //currentTimerCount = t->getTime();
-    //timeString = QString::number(currentTimerCount/60) + ":00";
-//    scene->addText(QString::fromStdString("Session IP"));
-    //new timer
-    //initializeTimer(t->getTimer());
-
-    //Set up recording object for this therapy
-    //Note: The name and start time of the recording is set properly here, the power level and duration will be saved at the end.
-    //Record* newR = new Record(t->getName(), QDateTime::currentDateTime(), 0, 0);
-    //recordings.append(newR);
 
     //Power Buttons Enabled
     ui->rightButton->blockSignals(false);
@@ -219,7 +203,6 @@ void MainWindow::navigateSubMenu() {
                     formatHistoryOut(history[i]);
                 }
             }
-
 
             ui->historyView->setText(historyOut);
             return;
@@ -360,9 +343,6 @@ void MainWindow::navigateBack() {
         masterMenu = masterMenu->getParent();
         updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
     }
-
-//    ui->programViewWidget->setVisible(false); // dk why this is done, this shutsdown the menu screen
-//    ui->electrodeLabel->setVisible(false);
 }
 
 void MainWindow::navigateToMainMenu() {
@@ -393,8 +373,6 @@ void MainWindow::navigateToMainMenu() {
     }
     sessionTexts(false);
     updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
-//    ui->programViewWidget->setVisible(false);
-//    ui->electrodeLabel->setVisible(false);
     currentTimerCount = -1;
     coherencetimer->stop();
     coherencetimer->disconnect();
@@ -574,38 +552,11 @@ void MainWindow::breathpacer(){
     ui->breathpacer->setValue(value);
 }
 
-//void MainWindow::coherenceUpdate()
-//{
-//    if((int(currentTimerCount) % 30) == 0){
-//        ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
-//    }
-//    numData++;
-//    xData[numData] = currentTimerCount;
-
-//    double r =( (rand() % 5));
-//    yData[numData] = yData[numData-1] + r;
-//    if (yData[numData] < 0){
-//        yData[numData] = yData[numData] + 4;
-//    } else if (yData[numData] > 16){
-//        yData[numData] = yData[numData] - 4;
-//    }
-
-//    // generate some data:
-//    QVector<double> x(numData), y(numData); // initialize with entries 0..100
-//    for (int i=0; i<numData; ++i)
-//    {
-//      x[i] = i/50.0; // x goes from -1 to 1
-//      //printf("%0.2f %0.2f",xData[i], yData[i]);
-//      //y[i] = yData[i]; // let's plot a quadratic function
-//      y[i] = yData[i];
-//    }
-
-//    ui->customPlot->graph(0)->setData(x, y);
-//    ui->customPlot->replot();
-//}
-
 void MainWindow::coherenceUpdate(){
-
+    if(ui->ApplySkin->currentText()=="TRUE"){
+        if(!coherencetimer->isActive()){
+            coherencetimer->start();
+        }
     if((currentTimerCount % 30) == 0){
         ui->customPlot->xAxis->setRange(0, currentTimerCount + 30);
     }
@@ -644,6 +595,10 @@ void MainWindow::coherenceUpdate(){
         ui->customPlot->replot();
     }
     updateCoherenceLabels();//updates score, length of session, achievment score
+    }
+    else{
+        navigateBack();
+    }
 }
 
 void MainWindow::updateCoherenceLabels(){
