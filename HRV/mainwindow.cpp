@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->LengthText->setVisible(false);
     ui->Achievement->setVisible(false);
     ui->historyView->setVisible(false);
+    ui->lowBatWarningList->setVisible(false);
+    ui->lowBatWarningTitle->setVisible(false);
     // Create menu tree
     masterMenu = new Menu("MAIN MENU", {"START A NEW SESSION","SETTINGS","HISTORY"}, nullptr);
     mainMenuOG = masterMenu;
@@ -181,6 +183,9 @@ void MainWindow::beginSession() {
     coherencetimer->setInterval(1000);
     coherencetimer->start();
     inSession = true;
+    updatesInRed = 0;
+    updatesInBlue = 0;
+    updatesInGreen = 0;
     initializecoherenceTimer();
     makePlot(0);
 }
@@ -189,7 +194,20 @@ void MainWindow::navigateSubMenu() {
 
     int index = activeQListWidget->currentRow();
     if (index < 0) return;
-
+    if (activeQListWidget == ui->lowBatWarningList){
+        batWarningStatus = 2;
+        if (activeQListWidget->currentItem()->text() == "END SESSION"){
+            ui->lowBatWarningList->setVisible(false);
+            ui->lowBatWarningTitle->setVisible(false);
+            activeQListWidget = ui->mainMenuListView;
+            navigateBack();
+        }else{
+            ui->lowBatWarningList->setVisible(false);
+            ui->lowBatWarningTitle->setVisible(false);
+            activeQListWidget = ui->mainMenuListView;
+        }
+        return;
+    }
     // Prevent crash if ok button is selected in view
     if (masterMenu->getName() == "HISTORY") {
         printf("in if %d", history.length());
@@ -305,6 +323,9 @@ void MainWindow::navigateBack() {
         newSession.achScore = ui->AchievementValue->text().toDouble();
         newSession.cLevel = challengelevel;
         newSession.sTime = currentTimerCount;
+        newSession.inRed = updatesInRed;
+        newSession.inBlue = updatesInBlue;
+        newSession.inGreen = updatesInGreen;
         QDate date = QDateTime::currentDateTime().date();
         QTime time = QDateTime::currentDateTime().time();
         newSession.year = date.year();
@@ -355,6 +376,9 @@ void MainWindow::navigateToMainMenu() {
         newSession.achScore = ui->AchievementValue->text().toDouble();
         newSession.cLevel = challengelevel;
         newSession.sTime = currentTimerCount;
+        newSession.inRed = updatesInRed;
+        newSession.inBlue = updatesInBlue;
+        newSession.inGreen = updatesInGreen;
         QDate date = QDateTime::currentDateTime().date();
         QTime time = QDateTime::currentDateTime().time();
         newSession.year = date.year();
@@ -404,6 +428,9 @@ void MainWindow::changePowerStatus() {
         storedData newSession;
         newSession.achScore = ui->AchievementValue->text().toDouble();
         newSession.cLevel = challengelevel;
+        newSession.inRed = updatesInRed;
+        newSession.inBlue = updatesInBlue;
+        newSession.inGreen = updatesInGreen;
         newSession.sTime = currentTimerCount;
         QDate date = QDateTime::currentDateTime().date();
         QTime time = QDateTime::currentDateTime().time();
@@ -473,6 +500,7 @@ void MainWindow::powerChange() {
 void MainWindow::rechargeBattery() {
 
     int batteryLevel = 100.0;
+    batWarningStatus = 0;
     changeBatteryLevel(batteryLevel);
 }
 
@@ -516,7 +544,22 @@ void MainWindow::drainBattery() {
 
     //1000 constant because 15 minutes is the longest therapy and we feel as it should last at least 15 minutes at full power
     double batteryLevel = batteryLvl - 0.05;
+    if (batteryLevel < 20 && batWarningStatus == 0){
+        batWarningStatus = 1;
+        ui->lowBatWarningList->setVisible(true);
+        ui->lowBatWarningTitle->setVisible(true);
+        ui->lowBatWarningList->clear();
+        activeQListWidget = ui->lowBatWarningList;
+        if(inSession){
+            activeQListWidget->addItem("CONTINUE SESSION");
+            activeQListWidget->addItem("END SESSION");
+        }
+        else{
+            activeQListWidget->addItem("CONTINUE");
+        }
+        activeQListWidget->setCurrentRow(0);
 
+    }
     changeBatteryLevel(batteryLevel);
     currentTimerCount++;
 }
@@ -620,34 +663,46 @@ void MainWindow::updateCoherenceLabels(){
         if(challengelevel == 1){
             if (coscore < 0.5){//red
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+                updatesInRed++;
             }else if(coscore > 0.9){//green
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+                updatesInGreen++;
             }else{//blue
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+                updatesInBlue++;
             }
         }else if(challengelevel == 2){
             if (coscore < 0.6){//red
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+                updatesInRed++;
             }else if(coscore > 2.1){//green
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+                updatesInGreen++;
             }else{//blue
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+                updatesInBlue++;
             }
         }else if(challengelevel == 3){
             if (coscore < 1.8){//red
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+                updatesInRed++;
             }else if(coscore > 4.0){//green
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+                updatesInGreen++;
             }else{//blue
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+                updatesInBlue++;
             }
         }else if(challengelevel == 4){
             if (coscore < 4.0){//red
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(255,0,0)}");
+                updatesInRed++;
             }else if(coscore > 6.0){//green
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,255,0)}");
+                updatesInGreen++;
             }else{//blue
                 ui->coherenceLevel->setStyleSheet("QLineEdit {background-color:rgb(0,0,255)}");
+                updatesInBlue++;
             }
         }
     }
@@ -660,12 +715,24 @@ void MainWindow::updateCoherenceLabels(){
 void MainWindow::formatHistoryOut(storedData d)
 {
     double tempAve;
+    double tempRed;
+    double tempBlue;
+    double tempGreen;
+    double tempTotal;
     if (d.sTime < 5){
         tempAve = 0;
+        tempRed = 0;
+        tempBlue = 0;
+        tempGreen =0;
     }else {
         tempAve = d.achScore/((d.sTime - (d.sTime % 5))/5);
+        tempTotal = d.inRed + d.inBlue + d.inGreen;
+        tempRed = std::round(((d.inRed / tempTotal) * 100) * 100) / 100;
+        tempBlue = std::round(((d.inBlue / tempTotal) * 100) * 100) / 100;
+        tempGreen = std::round(((d.inGreen / tempTotal) * 100) * 100) / 100;
     }
     historyOut = historyOut + QString::number(d.year) + "-" + QString::number(d.month) + "-" + QString::number(d.day) + "  " +
               d.time + "\n  Achievement Score: " + QString::number(d.achScore) + "\n  Session Time: " + QString::number(d.sTime)
-            + "\n  Challenge Level: " + QString::number(d.cLevel)+ + "\n  Average Coherence: " + QString::number(tempAve) + "\n";
+            + "\n  Challenge Level: " + QString::number(d.cLevel) + "\n  Red Zone: " + QString::number(tempRed) + "%\n  Blue Zone: "
+            + QString::number(tempBlue) + "%\n  Green Zone: " + QString::number(tempGreen) + "%\n  Average Coherence: " + QString::number(tempAve) + "\n";
 }
