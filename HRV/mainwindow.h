@@ -20,6 +20,9 @@ struct storedData{
     QString time;
     int sTime = 0;
     int cLevel = 0;
+    int inRed = 0;
+    int inBlue = 0;
+    int inGreen = 0;
     double achScore = 0;
 };
 
@@ -46,6 +49,7 @@ private:
     void initializeMainMenu(Menu*);
 
     double batteryLvl;
+    int batWarningStatus = 0;
     int currentTimerCount;
     int maxPowerLevel;
     bool powerStatus;
@@ -84,6 +88,9 @@ private:
     QVector<storedData> history;
     QString historyOut = "";
     bool inSession = false;
+    int updatesInRed = 0;
+    int updatesInBlue = 0;
+    int updatesInGreen = 0;
 
 private slots:
     void updateTimer();
