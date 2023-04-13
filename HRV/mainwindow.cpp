@@ -68,8 +68,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 void MainWindow::sessionTexts(bool a){
-    ui->electrodeLabel->setVisible(a);
-    ui->electrodeLabel_2->setVisible(!a);
+//    ui->electrodeLabel->setVisible(a);
+//    ui->electrodeLabel_2->setVisible(!a);
     ui->CoherenceText->setVisible(a);
     ui->LengthText->setVisible(a);
     ui->Achievement->setVisible(a);
@@ -210,7 +210,7 @@ void MainWindow::navigateSubMenu() {
     }
     // Prevent crash if ok button is selected in view
     if (masterMenu->getName() == "HISTORY") {
-        printf("in if %d", history.length());
+//        printf("in if %d", history.length());
         if (masterMenu->getMenuItems()[index] == "VIEW") {
             ui->historyView->setVisible(true);
             historyOut = "";
@@ -515,6 +515,10 @@ void MainWindow::changeBatteryLevel(double newLevel) {
         if (newLevel == 0.0 && powerStatus == true) {
             powerChange();
             batteryLvl = 0;
+            //fixes bug of mainmenu appearing in low battery alert, if alert continue wasnt selected
+            ui->lowBatWarningList->setVisible(false);
+            ui->lowBatWarningTitle->setVisible(false);
+            activeQListWidget = ui->mainMenuListView;
             //ui->powerButton->setDisabled(true);
         }else{
             batteryLvl = newLevel;
@@ -650,11 +654,11 @@ void MainWindow::updateCoherenceLabels(){
         double coscore = std::round(((static_cast<double>(rand()) / RAND_MAX) * 7.0) * 10) / 10;//random coherence score as data
         double currachscore = ui->AchievementValue->text().toDouble();
 
-        coscoredata.append(coscore);//keeps track of coherence score data
-        if (currentTimerCount > 64){//always removes the first coherence score past 64 seconds when it gets updated. to keep track properly of last 64 seconds for achievement score
-            currachscore -= coscoredata.first();
-            coscoredata.pop_front();
-        }
+//        coscoredata.append(coscore);//keeps track of coherence score data
+//        if (currentTimerCount > 64){//always removes the first coherence score past 64 seconds when it gets updated. to keep track properly of last 64 seconds for achievement score
+//            currachscore -= coscoredata.first();
+//            coscoredata.pop_front();
+//        }
 
         ui->CoherenceTextValue->setNum(coscore);
         ui->AchievementValue->setNum(currachscore + coscore);
@@ -735,4 +739,16 @@ void MainWindow::formatHistoryOut(storedData d)
               d.time + "\n  Achievement Score: " + QString::number(d.achScore) + "\n  Session Time: " + QString::number(d.sTime)
             + "\n  Challenge Level: " + QString::number(d.cLevel) + "\n  Red Zone: " + QString::number(tempRed) + "%\n  Blue Zone: "
             + QString::number(tempBlue) + "%\n  Green Zone: " + QString::number(tempGreen) + "%\n  Average Coherence: " + QString::number(tempAve) + "\n";
+}
+
+void MainWindow::on_ApplySkin_currentTextChanged(const QString &onskin)//updates the HR sensor image
+{
+    if (onskin == "TRUE"){//enable HR sensor
+        ui->electrodeLabel_2->setVisible(false);//off pic is disabled
+        ui->electrodeLabel->setVisible(true);//on pic is enabled
+    }
+    if (onskin == "FALSE"){//disable HR sensor
+        ui->electrodeLabel_2->setVisible(true);//off pic is enabled
+        ui->electrodeLabel->setVisible(false);//on pic is disabled
+    }
 }
