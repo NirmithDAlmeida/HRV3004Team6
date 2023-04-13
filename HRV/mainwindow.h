@@ -82,7 +82,7 @@ private:
     //for coherent data
     QVector<double> heartBeat ={60,71,60,80,55,82,65,74,61,79,55,70,65,84,62,78,53,85,62,71,63,77,55,70,65,86};
     //for tracking coherence scores
-    QVector<double> coscoredata;
+//    QVector<double> coscoredata;
     int heartpos=0;
 
     QVector<storedData> history;
@@ -106,5 +106,6 @@ private slots:
     void breathpacer();
     void coherenceUpdate();
     //void applySkin();
+    void on_ApplySkin_currentTextChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

@@ -202,7 +202,7 @@ background-color: rgb(0, 0, 0);</string>
       <number>0</number>
      </property>
      <property name="value">
-      <number>79</number>
+      <number>100</number>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1296,12 +1296,12 @@ QPushButton:pressed {
     </property>
     <item>
      <property name="text">
-      <string>TRUE</string>
+      <string>FALSE</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>FALSE</string>
+      <string>TRUE</string>
      </property>
     </item>
    </widget>
