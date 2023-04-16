@@ -25,6 +25,7 @@ b. Documentation
         III.  UML 
         IV.  Traceability Matrix 
         V .  Sequence Diagram
+c. Readme.txt
 * Thanks for reading the tips 
 
 
