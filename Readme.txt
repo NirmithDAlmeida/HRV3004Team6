@@ -37,9 +37,6 @@ Alex
    * Added QTCustomPlot to the project add created the base structure for our implemented graph
    * Added the first version of gathering heart rate data, storing heart rate data, and plotting heart rate data in our graph
    * Added the functionality for storing, showing, and clearing the session data
-________________
-
-
 
 
 Kenji   
