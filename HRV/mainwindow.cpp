@@ -543,6 +543,7 @@ void MainWindow::changeBatteryLevel(double newLevel) {
         }
     }
 }
+//test
 
 void MainWindow::drainBattery() {
 
